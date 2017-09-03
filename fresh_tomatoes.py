@@ -1,7 +1,10 @@
 import webbrowser
 import os
 import re
-
+# coding=utf-8
+import sys
+reload(sys)
+sys.setdefaultencoding('utf-8')
 # Styles and scripting for the page
 main_page_head = '''
 <head>
@@ -63,8 +66,8 @@ main_page_head = '''
         });
         // Start playing the video whenever the trailer modal is opened
         $(document).on('click', '.movie-tile', function (event) {
-            var trailerYouTubeId = $(this).attr('data-trailer-youtube-id')
-            var sourceUrl = 'http://www.youtube.com/embed/' + trailerYouTubeId + '?autoplay=1&html5=1';
+            var sourceUrl = $(this).attr('data-trailer-youtube-url')
+           // var sourceUrl = 'http://www.youtube.com/embed/' + trailerYouTubeId + '?autoplay=1&html5=1';
             $("#trailer-video-container").empty().append($("<iframe></iframe>", {
               'id': 'trailer-video',
               'type': 'text-html',
@@ -119,8 +122,8 @@ main_page_content = '''
 
 # A single movie entry html template
 movie_tile_content = '''
-<div class="col-md-6 col-lg-4 movie-tile text-center" data-trailer-youtube-id="{trailer_youtube_id}" data-toggle="modal" data-target="#trailer">
-    <img src="{poster_image_url}" width="220" height="342">
+<div class="col-md-6 col-lg-4 movie-tile text-center" data-trailer-youtube-url="{trailer_youtube_url}" data-toggle="modal" data-target="#trailer">
+     <img src="{poster_image_url}" width="220" height="342">
     <h2>{movie_title}</h2>
 </div>
 '''
@@ -136,9 +139,9 @@ def create_movie_tiles_content(movies):
 
         # Append the tile for the movie with its content filled in
         content += movie_tile_content.format(
-            movie_title=movie.title,
-            poster_image_url=movie.poster_image_url,
-            trailer_youtube_id=trailer_youtube_id
+            movie_title = movie.title,
+            poster_image_url = movie.poster_image_url,
+            trailer_youtube_url = movie.trailer_youtube_url
         )
     return content
 
